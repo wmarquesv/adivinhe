@@ -48,6 +48,7 @@ export default function app() {
     );
 
     if (exists) {
+      setLetter("");
       return alert("Voce ja utilizou a letra " + value);
     }
 
@@ -65,9 +66,32 @@ export default function app() {
     setLetter("");
   }
 
+  function endGame(message: string) {
+    alert(message);
+    startGame();
+  }
+
   useEffect(() => {
     startGame();
   }, []);
+
+  useEffect(() => {
+    if (!challenge) {
+      return;
+    }
+
+    setTimeout(() => {
+      if (score === challenge.word.length) {
+        return endGame("Parabéns, voce descobriu a palavra!");
+      }
+
+      const attemptLimit = challenge.word.length + ATTEMPT_MARGIN;
+
+      if (lettersUsed.length === attemptLimit) {
+        return endGame("Que pena, voce usou todas as tentativas");
+      }
+    }, 200);
+  }, [score, lettersUsed.length]);
 
   if (!challenge) {
     return;
