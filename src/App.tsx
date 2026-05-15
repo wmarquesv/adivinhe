@@ -16,6 +16,8 @@ export default function app() {
   const [lettersUsed, setLettersUsed] = useState<LettersUsedProps[]>([]);
   const [challenge, setChallenge] = useState<Challenge | null>(null);
 
+  const ATTEMPT_MARGIN = 5;
+
   function handleRestartGame() {
     alert("Reiniciar o jogo!");
   }
@@ -74,7 +76,11 @@ export default function app() {
   return (
     <div className={styles.container}>
       <main>
-        <Header current={score} max={10} onRestart={handleRestartGame} />
+        <Header
+          current={lettersUsed.length}
+          max={challenge.word.length + ATTEMPT_MARGIN}
+          onRestart={handleRestartGame}
+        />
 
         <Tip tip={challenge.tip} />
 
