@@ -15,6 +15,7 @@ export default function app() {
   const [letter, setLetter] = useState("");
   const [lettersUsed, setLettersUsed] = useState<LettersUsedProps[]>([]);
   const [challenge, setChallenge] = useState<Challenge | null>(null);
+  const [shake, setShake] = useState(false);
 
   const ATTEMPT_MARGIN = 5;
 
@@ -68,6 +69,11 @@ export default function app() {
     setScore(currentScore);
 
     setLetter("");
+
+    if (!correct) {
+      setShake(true);
+      setTimeout(() => setShake(false), 300);
+    }
   }
 
   function endGame(message: string) {
@@ -112,7 +118,7 @@ export default function app() {
 
         <Tip tip={challenge.tip} />
 
-        <div className={styles.word}>
+        <div className={`${styles.word} ${shake ? styles.shakeAnimation : ""}`}>
           {challenge.word.split("").map((letter, index) => {
             const letterUsed = lettersUsed.find(
               (used) => used.value.toUpperCase() === letter.toUpperCase()
